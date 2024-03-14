@@ -1789,7 +1789,7 @@ let fontFace = (
   ~sizeAdjust=?,
   (),
 ) => {
-  let fontStyle = Js.Option.map((. value) => FontStyle.toString(value), fontStyle)
+  let fontStyle = Option.map((. value) => FontStyle.toString(value), fontStyle)
   let src =
     src
     |> List.map(x =>

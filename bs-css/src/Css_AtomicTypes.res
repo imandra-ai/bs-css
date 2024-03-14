@@ -29,7 +29,7 @@ module Var = {
   let var = x => #var(x)
   let varDefault = (x, default) => #varDefault((x, default))
 
-  let prefix = x => Js.String.startsWith("--", x) ? x : "--" ++ x
+  let prefix = x => Js.String.startsWith(~prefix="--", x) ? x : "--" ++ x
 
   let toString = x =>
     switch x {
@@ -1387,7 +1387,7 @@ module GridTemplateAreas = {
     switch x {
     | #none => "none"
     | #areas(items) =>
-      String.trim(Belt.Array.reduceU(items, "", (. carry, item) => carry ++ "'" ++ item ++ "' "))
+      String.trim(Belt.Array.reduceU(items, "", @u (. carry, item) => carry ++ "'" ++ item ++ "' " ))
     }
 }
 
@@ -1711,7 +1711,7 @@ module Gradient = {
   let string_of_stops = stops =>
     stops
     ->Belt.Array.map(((l, c)) => string_of_color(c) ++ " " ++ PercentageLengthCalc.toString(l))
-    ->Js.Array2.joinWith(", ")
+    ->Js.Array.join(~sep=", ")
 
   let toString = x =>
     switch x {
@@ -1998,7 +1998,7 @@ module Content = {
     | #noCloseQuote => "no-close-quote"
     | #attr(name) => "attr(" ++ name ++ ")"
     | #text(value) =>
-      switch value->Js.String2.get(0) {
+      switch value->Js.String.get(0) {
       | "\"" | "'" => value
       | _ => "\"" ++ value ++ "\""
       }

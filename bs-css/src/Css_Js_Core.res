@@ -7,7 +7,7 @@ type rec rule =
   | PseudoClass(string, array<rule>)
   | PseudoClassParam(string, string, array<rule>)
 
-let rec ruleToDict = (. dict, rule) => {
+let rec ruleToDict = @u (. dict, rule) => {
   switch rule {
   | D(name, value) if name == "content" =>
     dict->Js.Dict.set(name, Js.Json.string(value == "" ? "\"\"" : value))
@@ -67,7 +67,7 @@ module Make = (CssImpl: Css_Core.CssImplementationIntf): (
   let merge4 = (. s, s2, s3, s4) => merge(. [s, s2, s3, s4])
 
   let framesToDict = frames =>
-    frames->Belt.Array.reduceU(Js.Dict.empty(), (. dict, (stop, rules)) => {
+    frames->Belt.Array.reduceU(Js.Dict.empty(), @u (. dict, (stop, rules)) => {
       Js.Dict.set(dict, Js.Int.toString(stop) ++ "%", toJson(rules))
       dict
     })
@@ -86,7 +86,7 @@ module Calc = {
 }
 
 let join = (strings, separator) =>
-  strings->Belt.Array.reduceWithIndexU("", (. acc, item, index) =>
+  strings->Belt.Array.reduceWithIndexU("", @u (. acc, item, index) =>
     index == 0 ? item : acc ++ (separator ++ item)
   )
 
@@ -1800,7 +1800,7 @@ let fontFace = (
   ~sizeAdjust=?,
   (),
 ) => {
-  let fontStyle = Js.Option.map((. value) => FontStyle.toString(value), fontStyle)
+  let fontStyle = Option.map((. value) => FontStyle.toString(value), fontStyle)
 
   let src =
     src
